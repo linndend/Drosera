@@ -1,6 +1,11 @@
-## AUTO RUN DRESROSA NODE
+## AUTO RUN DROSERA NODE
 ```
 wget -O drosera.sh https://raw.githubusercontent.com/linndend/Drosera/refs/heads/main/drosera.sh && chmod +x ./drosera.sh && ./drosera.sh
+```
+## Step drosera.toml input manually 
+```
+private_trap = true
+whitelist = ["$OPERATOR_ADDRESS"]
 ```
 1- Connect your EVM wallet: https://app.drosera.io/
 
