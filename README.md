@@ -1,3 +1,7 @@
+## AUTO RUN DRESROSA NODE
+```
+wget -O drosera.sh https://raw.githubusercontent.com/linndend/Drosera/refs/heads/main/drosera.sh && chmod +x ./drosera.sh && ./drosera.sh
+```
 1- Connect your EVM wallet: https://app.drosera.io/
 
 2- Click on `Traps Owned` to see  your deployed Traps OR search your Trap address.
