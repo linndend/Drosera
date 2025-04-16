@@ -91,9 +91,9 @@ sleep 20
 drosera dryrun
 
 echo " Setting private trap config and whitelist operator..."
+cd ~/my-drosera-trap
 read -p " Operator Wallet Address: " OPERATOR_ADDRESS
 cat <<EOF >> drosera.toml
-
 private_trap = true
 whitelist = ["$OPERATOR_ADDRESS"]
 EOF
