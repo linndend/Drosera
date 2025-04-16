@@ -8,11 +8,11 @@ echo "============================================="
 echo        "INSTALL DEPENDENCIES & ENV"
 echo "============================================="
 
-echo " Updating dan install dependencies..."
+echo "🚀 Updating dan install dependencies..."
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install curl ufw iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip -y
 
-echo " Install Docker..."
+echo "🚀 Install Docker..."
 sleep 3
 sudo apt update -y && sudo apt upgrade -y
 for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
@@ -30,21 +30,30 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt update -y && sudo apt upgrade -y
-sleep 2
+sleep 5
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sleep 3
 
-echo " Install Drosera CLI..."
-curl -L https://app.drosera.io/install | bash && source /root/.bashrc
+echo "🚀 Install Drosera CLI..."
 sleep 2
+curl -L https://app.drosera.io/install | bash
+export PATH="$HOME/.drosera/bin:$PATH"
+sleep 5
+source ~/.bashrc
 droseraup
 
-echo " Install Foundry..."
-curl -L https://foundry.paradigm.xyz | bash && source /root/.bashrc
-sleep 2
+echo "🚀 Install Foundry..."
+curl -L https://foundry.paradigm.xyz | bash
+export PATH="$HOME/.foundry/bin:$PATH"
+sleep 5
+source ~/.bashrc
 foundryup
 
-echo " Install Bun..."
-curl -fsSL https://bun.sh/install | bash && source /root/.bashrc
+echo "🚀 Install Bun..."
+sleep 2
+curl -fsSL https://bun.sh/install | bash
+export PATH="$HOME/.bun/bin:$PATH"
+source ~/.bashrc
 
 echo "============================================="
 echo                 "SETUP TRAP"
@@ -55,21 +64,23 @@ cd ~
 mkdir -p ~/my-drosera-trap
 cd ~/my-drosera-trap
 
-read -p " Masukkan GITHUB EMAIL: " GITHUB_EMAIL
-read -p " Masukkan GITHUB USERNAME: " GITHUB_USERNAME
+read -p "🔑 Masukkan GITHUB EMAIL: " GITHUB_EMAIL
+read -p "🔑 Masukkan GITHUB USERNAME: " GITHUB_USERNAME
 git config --global user.email "$GITHUB_EMAIL"
 git config --global user.name "$GITHUB_USERNAME"
 
 forge init -t drosera-network/trap-foundry-template
 curl -fsSL https://bun.sh/install | bash
+sleep 5
 bun install
+sleep 3
 forge build
 
 echo " Deploying Trap..."
-read -p " Private Key EVM: " PRIVATE_KEY
-DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply <<< "ofc"
+read -p "🔑 Private Key EVM: " PRIVATE_KEY
+DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
 
-echo -e "\033]8;;https://app.drosera.io/\033\\ Connect your Drosera EVM wallet\033]8;;\033\\"\necho " Link Website: https://app.drosera.io/"
+echo -e "\e[0;37m Login on website: \e[4;35mhttps://app.drosera.io/"
 sleep 10
 echo "Connect wallet burner"
 sleep 10
@@ -107,7 +118,7 @@ echo                "SYSTEMD SERVICE"
 echo "============================================="
 
 echo " Make systemd service drosera..."
-read -p " VPS Public IP Address: " VPS_IP
+read -p "🔑 VPS Public IP Address: " VPS_IP
 sudo tee /etc/systemd/system/drosera.service > /dev/null <<EOF
 [Unit]
 Description=Drosera Node Service
@@ -147,9 +158,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable drosera
 sudo systemctl start drosera
 
-echo "============================================="
-echo                     "DONE"
-echo "============================================="
-
+echo "✅ Setup complete!"
+echo "🔍 Checking node status..."
+sleep 2
 journalctl -u drosera.service -f
 
