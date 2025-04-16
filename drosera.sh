@@ -64,10 +64,12 @@ cd ~
 mkdir -p ~/my-drosera-trap
 cd ~/my-drosera-trap
 
+{
 read -p "🔑 Masukkan GITHUB EMAIL: " GITHUB_EMAIL 
 read -p "🔑 Masukkan GITHUB USERNAME: " GITHUB_USERNAME 
 git config --global user.email "$GITHUB_EMAIL"
 git config --global user.name "$GITHUB_USERNAME"
+} | tee -a drosera.log
 
 forge init -t drosera-network/trap-foundry-template
 curl -fsSL https://bun.sh/install | bash
@@ -76,9 +78,11 @@ bun install
 sleep 3
 forge build
 
+{
 echo " Deploying Trap..."
 read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
+} | tee -a drosera.log
 
 echo -e "\e[0;37m Login on website: \e[4;35mhttps://app.drosera.io/"
 sleep 10
@@ -90,15 +94,19 @@ echo "Open your Trap on Dashboard and Click on Send Bloom Boost and deposit some
 sleep 20
 drosera dryrun
 
+{
 echo " Setting private trap config and whitelist operator..."
 cd ~/my-drosera-trap
-read -p " Operator Wallet Address: " OPERATOR_ADDRESS "
+read -p "🔑 Operator Wallet Address: " OPERATOR_ADDRESS
 cat <<EOF >> drosera.toml
+
 private_trap = true
 whitelist = ["$OPERATOR_ADDRESS"]
 EOF
 
+read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
+} | tee -a drosera.log
 
 echo "============================================="
 echo               "INSTALL OPERATOR"
@@ -111,12 +119,14 @@ tar -xvf drosera-operator-v1.16.2-x86_64-unknown-linux-gnu.tar.gz
 sudo cp drosera-operator /usr/bin
 
 echo " Registering Operator..."
+read -p "🔑 Private Key EVM: " PRIVATE_KEY
 drosera-operator register --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com --eth-private-key "$PRIVATE_KEY"
 
 echo "============================================="
 echo                "SYSTEMD SERVICE"
 echo "============================================="
 
+{
 echo "📦 Make systemd service drosera..."
 read -p "🔑 VPS Public IP Address: " VPS_IP 
 read -p "🔐 ETH Private Key: " PRIVATE_KEY
@@ -143,7 +153,7 @@ ExecStart=$(which drosera-operator) node --db-file-path $HOME/.drosera.db --netw
 [Install]
 WantedBy=multi-user.target
 EOF
-
+} | tee -a drosera.log
 
 echo "============================================="
 echo             "SETUP UFW & RUN"
@@ -161,7 +171,10 @@ sudo systemctl daemon-reload
 sudo systemctl enable drosera
 sudo systemctl start drosera
 
-drosera-operator optin --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com --trap-config-address
+echo " Sign OPT in..."
+read -p "🔑 Private Key EVM: " PRIVATE_KEY
+read -p "🔑 Private Key EVM: " TRAP_ADDRESS
+drosera-operator optin --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com --trap-config-address "$TRAP_ADDRESS" --eth-private-key "$PRIVATE_KEY"
 
 echo "✅ Setup complete!"
 echo "🔍 Checking node status..."
