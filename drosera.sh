@@ -95,15 +95,13 @@ drosera dryrun
 
 echo " Setting private trap config and whitelist operator..."
 cd ~/my-drosera-trap
-read -p "🔑 Operator Wallet Address: " OPERATOR_ADDRESS
-cat <<EOF >> drosera.toml
-
-private_trap = true
-whitelist = ["$OPERATOR_ADDRESS"]
-EOF
+sleep 3
+nano drosera.toml
+sleep 5
 
 read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
+sleep 5
 
 echo "============================================="
 echo               "INSTALL OPERATOR"
@@ -111,6 +109,7 @@ echo "============================================="
 
 echo " Install Operator CLI..."
 cd ~
+sleep 3
 curl -LO https://github.com/drosera-network/releases/releases/download/v1.16.2/drosera-operator-v1.16.2-x86_64-unknown-linux-gnu.tar.gz
 tar -xvf drosera-operator-v1.16.2-x86_64-unknown-linux-gnu.tar.gz
 sudo cp drosera-operator /usr/bin
