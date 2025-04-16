@@ -98,6 +98,7 @@ private_trap = true
 whitelist = ["$OPERATOR_ADDRESS"]
 EOF
 
+read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
 
 echo "============================================="
@@ -111,6 +112,7 @@ tar -xvf drosera-operator-v1.16.2-x86_64-unknown-linux-gnu.tar.gz
 sudo cp drosera-operator /usr/bin
 
 echo " Registering Operator..."
+read -p "🔑 Private Key EVM: " PRIVATE_KEY
 drosera-operator register --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com --eth-private-key "$PRIVATE_KEY"
 
 echo "============================================="
