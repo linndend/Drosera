@@ -78,11 +78,10 @@ bun install
 sleep 3
 forge build
 
-{
+
 echo " Deploying Trap..."
 read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
-} | tee -a drosera.log
 
 echo -e "\e[0;37m Login on website: \e[4;35mhttps://app.drosera.io/"
 sleep 10
@@ -94,7 +93,6 @@ echo "Open your Trap on Dashboard and Click on Send Bloom Boost and deposit some
 sleep 20
 drosera dryrun
 
-{
 echo " Setting private trap config and whitelist operator..."
 cd ~/my-drosera-trap
 read -p "🔑 Operator Wallet Address: " OPERATOR_ADDRESS
@@ -106,7 +104,6 @@ EOF
 
 read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
-} | tee -a drosera.log
 
 echo "============================================="
 echo               "INSTALL OPERATOR"
@@ -126,7 +123,6 @@ echo "============================================="
 echo                "SYSTEMD SERVICE"
 echo "============================================="
 
-{
 echo "📦 Make systemd service drosera..."
 read -p "🔑 VPS Public IP Address: " VPS_IP 
 read -p "🔐 ETH Private Key: " PRIVATE_KEY
@@ -153,7 +149,6 @@ ExecStart=$(which drosera-operator) node --db-file-path $HOME/.drosera.db --netw
 [Install]
 WantedBy=multi-user.target
 EOF
-} | tee -a drosera.log
 
 echo "============================================="
 echo             "SETUP UFW & RUN"
