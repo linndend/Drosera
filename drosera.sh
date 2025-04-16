@@ -64,8 +64,8 @@ cd ~
 mkdir -p ~/my-drosera-trap
 cd ~/my-drosera-trap
 
-read -p "🔑 Masukkan GITHUB EMAIL: " GITHUB_EMAIL
-read -p "🔑 Masukkan GITHUB USERNAME: " GITHUB_USERNAME
+read -p "🔑 Masukkan GITHUB EMAIL: " GITHUB_EMAIL 
+read -p "🔑 Masukkan GITHUB USERNAME: " GITHUB_USERNAME 
 git config --global user.email "$GITHUB_EMAIL"
 git config --global user.name "$GITHUB_USERNAME"
 
@@ -92,13 +92,12 @@ drosera dryrun
 
 echo " Setting private trap config and whitelist operator..."
 cd ~/my-drosera-trap
-read -p " Operator Wallet Address: " OPERATOR_ADDRESS
+read -p " Operator Wallet Address: " OPERATOR_ADDRESS "
 cat <<EOF >> drosera.toml
 private_trap = true
 whitelist = ["$OPERATOR_ADDRESS"]
 EOF
 
-read -p "🔑 Private Key EVM: " PRIVATE_KEY
 DROSERA_PRIVATE_KEY="$PRIVATE_KEY" drosera apply
 
 echo "============================================="
@@ -112,15 +111,16 @@ tar -xvf drosera-operator-v1.16.2-x86_64-unknown-linux-gnu.tar.gz
 sudo cp drosera-operator /usr/bin
 
 echo " Registering Operator..."
-read -p "🔑 Private Key EVM: " PRIVATE_KEY
 drosera-operator register --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com --eth-private-key "$PRIVATE_KEY"
 
 echo "============================================="
 echo                "SYSTEMD SERVICE"
 echo "============================================="
 
-echo " Make systemd service drosera..."
-read -p "🔑 VPS Public IP Address: " VPS_IP
+echo "📦 Make systemd service drosera..."
+read -p "🔑 VPS Public IP Address: " VPS_IP 
+read -p "🔐 ETH Private Key: " PRIVATE_KEY
+
 sudo tee /etc/systemd/system/drosera.service > /dev/null <<EOF
 [Unit]
 Description=Drosera Node Service
@@ -135,14 +135,15 @@ ExecStart=$(which drosera-operator) node --db-file-path $HOME/.drosera.db --netw
     --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com \
     --eth-backup-rpc-url https://1rpc.io/holesky \
     --drosera-address 0xea08f7d533C2b9A62F40D5326214f39a8E3A32F8 \
-    --eth-private-key $PRIVATE_KEY \
+    --eth-private-key ${PRIVATE_KEY} \
     --listen-address 0.0.0.0 \
-    --network-external-p2p-address $VPS_IP \
+    --network-external-p2p-address ${VPS_IP} \
     --disable-dnr-confirmation true
 
 [Install]
 WantedBy=multi-user.target
 EOF
+
 
 echo "============================================="
 echo             "SETUP UFW & RUN"
@@ -159,6 +160,8 @@ echo " Running node Drosera..."
 sudo systemctl daemon-reload
 sudo systemctl enable drosera
 sudo systemctl start drosera
+
+drosera-operator optin --eth-rpc-url https://ethereum-holesky-rpc.publicnode.com --trap-config-address
 
 echo "✅ Setup complete!"
 echo "🔍 Checking node status..."
