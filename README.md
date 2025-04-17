@@ -5,8 +5,9 @@ wget -O drosera.sh https://raw.githubusercontent.com/linndend/Drosera/refs/heads
 ## Step drosera.toml input manually 
 ```
 private_trap = true
-whitelist = ["$OPERATOR_ADDRESS"]
+whitelist = ["OPERATOR_ADDRESS"]
 ```
+Change OPERATOR_ADDRESS using your wallet
 ## if you want add new whitelist OPT address add on drosera.toml like this :
 ```
 private_trap = true
