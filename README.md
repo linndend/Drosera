@@ -7,6 +7,12 @@ wget -O drosera.sh https://raw.githubusercontent.com/linndend/Drosera/refs/heads
 private_trap = true
 whitelist = ["$OPERATOR_ADDRESS"]
 ```
+## if you want add new whitelist OPT address add on drosera.toml like this :
+```
+private_trap = true
+whitelist = ["OPERATOR_ADDRESS1"]
+whitelist = ["OPERATOR_ADDRESS2"]
+```
 1- Connect your EVM wallet: https://app.drosera.io/
 
 2- Click on `Traps Owned` to see  your deployed Traps OR search your Trap address.
