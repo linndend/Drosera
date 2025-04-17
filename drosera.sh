@@ -1,12 +1,18 @@
 #!/bin/bash
 
-width=$(tput cols)
-title="SETUP DROSERA NODE"
-padding=$(( ($width - ${#title}) / 2 ))
-line=$(printf '=%.0s' $(seq 1 $width))
+clear
+
+center_text() {
+  local text="$1"
+  local width=$(tput cols)
+  local padding=$(( (width - ${#text}) / 2 ))
+  printf "%*s%s\n" $padding "" "$text"
+}
+
+line=$(printf '=%.0s' $(seq 1 $(tput cols)))
 
 echo "$line"
-printf "%*s%s\n" $padding "" "$title"
+center_text "SETUP DROSERA NODE"
 echo "$line"
 
 echo "1. Setup Full Node + Deploy Trap"
