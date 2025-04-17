@@ -1,8 +1,13 @@
 #!/bin/bash
 
-echo "==============================="
-echo     "SETUP DROSERA FULL NODE"
-echo "==============================="
+width=$(tput cols)
+title="SETUP DROSERA NODE"
+padding=$(( ($width - ${#title}) / 2 ))
+line=$(printf '=%.0s' $(seq 1 $width))
+
+echo "$line"
+printf "%*s%s\n" $padding "" "$title"
+echo "$line"
 
 echo "1. Setup Full Node + Deploy Trap"
 echo "2. Run 1 address Operator"
