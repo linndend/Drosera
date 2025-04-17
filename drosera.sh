@@ -17,17 +17,17 @@ echo "$line"
 
 echo "1. Setup Full Node + Deploy Trap"
 echo "2. Run 1 address Operator"
-read -p "Choose opsi (1 atau 2): " choose
+read -p "Choose opsi (1 or 2): " choose
 
 if [ "$choose" == "1" ]; then
 
-echo "Setup full node dan deploy trap..."
+echo "Setup full node and deploy trap..."
 
 echo "============================================="
 echo        "INSTALL DEPENDENCIES & ENV"
 echo "============================================="
 
-echo "🚀 Updating dan install dependencies..."
+echo "🚀 Updating and install dependencies..."
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install curl ufw iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip -y
 
