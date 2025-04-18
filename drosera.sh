@@ -17,10 +17,12 @@ echo "$line"
 
 echo "1. Setup Full Node + Deploy Trap"
 echo "2. Run 1 address Operator"
-read -p "Choose opsi (1 or 2): " choose
+echo "3. Setup with docker"
+read -p "Choose opsi (1, 2 or 3): " choose
 
 if [ "$choose" == "1" ]; then
 
+clear
 echo "Setup full node and deploy trap..."
 
 echo "============================================="
@@ -196,6 +198,7 @@ journalctl -u drosera.service -f
 
 elif [ "$choose" == "2" ]; then
 
+clear
 echo "Make sure the wallet address has been whitelisted in drosera.toml beforehand"
 sleep 10
 
@@ -287,7 +290,60 @@ echo "🔍 Checking node status..."
 sleep 2
 journalctl -u drosera.service -f
 
+if [ "$choose" == "3" ]; then
+
+clear
+echo " Setup using docker..."
+  echo "🚀 Install Docker..."
+sleep 3
+sudo apt update -y && sudo apt upgrade -y
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+sleep 3
+
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update -y && sudo apt upgrade -y
+sleep 5
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sleep 3
+apt install git 
+sleep 5
+
+git clone https://github.com/0xmoei/Drosera-Network
+sleep 3
+cd Drosera-Network
+sleep 3
+cp .env.example .env
+sleep 3
+echo " Change PK and VPSIP"
+sleep 5
+nano .env
+docker compose up -d
+sleep 3
+echo "✅ Setup complete!"
+echo " Optional restart and stop docker..."
+# Stop node
+echo " cd Drosera-Network"
+echo " docker compose down -v"
+
+# Restart node
+echo " cd Drosera-Network "
+echo " docker compose up -d"
+echo "🔍 Checking node status..."
+
+cd Drosera-Network
+docker compose logs -f
+
 else
-    echo "❌ Pilihan tidak valid. Silakan jalankan ulang script."
+    echo "❌ Choose not valid. Running again script."
     exit 1
 fi
