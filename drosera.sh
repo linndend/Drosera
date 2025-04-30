@@ -196,6 +196,8 @@ echo "🔍 Checking node status..."
 sleep 2
 journalctl -u drosera.service -f
 
+fi
+
 elif [ "$choose" == "2" ]; then
 
 clear
@@ -290,6 +292,8 @@ echo "🔍 Checking node status..."
 sleep 2
 journalctl -u drosera.service -f
 
+fi
+
 elif [ "$choose" == "3" ]; then
 
 clear
@@ -331,11 +335,9 @@ docker compose up -d
 sleep 3
 echo "✅ Setup complete!"
 echo " Optional restart and stop docker..."
-# Stop node
 echo " cd Drosera-Network"
 echo " docker compose down -v"
 
-# Restart node
 echo " cd Drosera-Network "
 echo " docker compose up -d"
 echo "🔍 Checking node status..."
