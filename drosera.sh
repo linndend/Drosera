@@ -290,7 +290,7 @@ echo "🔍 Checking node status..."
 sleep 2
 journalctl -u drosera.service -f
 
-if [ "$choose" == "3" ]; then
+elif [ "$choose" == "3" ]; then
 
 clear
 echo " Setup using docker..."
